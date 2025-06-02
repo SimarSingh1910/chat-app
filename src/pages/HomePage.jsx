@@ -1,10 +1,15 @@
 import React from 'react'
+import LeftPanel from '../Components/Home/LeftPanel'
+import MiddlePanel from '../Components/Home/MiddlePanel'
+import RightPanel from '../Components/Home/RightPanel'
 
 const HomePage = () => {
     return (
-        <div>
-            <h1>Home Page</h1>
-        </div>
+        <>
+            <LeftPanel />
+            <MiddlePanel />
+            <RightPanel />
+        </>
     )
 }
 
