@@ -11,7 +11,7 @@ const ContactCardsInfo = ({ img, name, text, unreads, time }) => {
             </div>
             <div className='absolute right-0 top-1 mt-[3%] flex flex-col items-end'>
                 <div className='text-gray-600 text-sm'>{time}</div>
-                <div className='bg-blue-600 w-4 h-4 m-auto rounded-full flex justify-center items-center text-white text-xs'>{unreads}</div>
+                <div className='bg-cyan-800 w-4 h-4 m-auto rounded-full flex justify-center items-center text-white text-xs'>{unreads}</div>
             </div>
             <div className='absolute left-0 right-0 bottom-0 h-0.5 bg-gray-300 w-full'></div>
         </div>
