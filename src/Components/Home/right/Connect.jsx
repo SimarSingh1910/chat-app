@@ -6,7 +6,7 @@ const Connect = () => {
             <div className='flex mt-4'>
                 <div className='mt-2'>
                     <img src='src\assets\message-bubble-svgrepo-com.svg' alt='' className='w-15 ml-28'/>
-                    <h4 className='ml-32 text-sm'>Chat</h4>
+                    <h4 className='ml-32 text-sm text-'>Chat</h4>
                 </div>
                 <div className="border-l-2 border-gray-300 h-22 ml-5"></div>
                 <div className='mt-2'>
