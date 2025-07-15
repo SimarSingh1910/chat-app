@@ -1,28 +1,43 @@
-# Node modules
+# Node.js
 node_modules/
-
-# Logs
-logs/
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
 # Environment variables
 .env
-
-# Build output (if using TypeScript or bundlers)
-dist/
-build/
+.env.local
+.env.*.local
 
 # OS-specific files
 .DS_Store
 Thumbs.db
 
-# IDEs/editors
+# Logs
+logs
+*.log
+logs/**/*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Build output
+dist/
+build/
+
+# Coverage (if using test coverage tools like nyc or jest)
+coverage/
+
+# VS Code settings
 .vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
+*.code-workspace
+
+# Optional: if using TypeScript
+*.tsbuildinfo
+
+# MongoDB data dumps (if using mongodump locally)
+dump/
