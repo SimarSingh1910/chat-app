@@ -11,8 +11,8 @@ const AttachmentCards = ( {type, img}) => {
     }
 
     return (
-        <div>
-            <img src={ img } alt={`${type} attachment`} className='w-15 h-10 ml-5' />
+        <div className='flex gap-5 mt-1'>
+            <img src={ img } alt={`${type} attachment`} className='w-12 h-12 ' />
             <p>{ getTypeLabel() }</p>
         </div>
     )
