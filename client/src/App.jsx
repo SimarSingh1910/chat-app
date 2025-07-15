@@ -7,11 +7,11 @@ import ProfilePage from './pages/ProfilePage'
 const App = () => {
   return (
     <div>
-        <Routes>
-          <Route path='/' element={ <HomePage /> } />
-          <Route path='/login' element={ <LoginPage /> } />
-          <Route path='/profile' element={ <ProfilePage /> } />
-        </Routes>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/profile' element={<ProfilePage />} />
+      </Routes>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 // src/assets.js
 
-import Logo from './assets/logo.png';
+import Logo from './assets/logo.jpg';
 import ChatIcon from './assets/chat.svg';
 import AvatarDefault from './assets/avatar-default.jpg';
 import UserIcon from './assets/user-icon.svg';
