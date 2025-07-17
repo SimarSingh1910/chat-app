@@ -11,7 +11,7 @@ const AttachmentCards = ( {type, img}) => {
     }
 
     return (
-        <div className='flex gap-5 mt-1'>
+        <div className='flex mt-1 hover:cursor-pointer rounded-full'>
             <img src={ img } alt={`${type} attachment`} className='w-12 h-12 ' />
             <p>{ getTypeLabel() }</p>
         </div>

@@ -3,7 +3,7 @@ import React from 'react'
 const ContactCardsInfo = ({ img, name, text, unreads, time }) => {
 
     return (
-        <div className="w-[98%] h-[13%] flex relative items-center ml-[1%] pb-[2%]" >
+        <div className="w-[98%] h-[13%] flex relative items-center ml-[1%] pb-[2%] hover:bg-gray-300 rounded-2xl" >
             <img src={img} alt="Display Pic" className='w-13 h-13 rounded-full mr-4 object-cover' />
             <div className='pr-20 flex-1 min-w-0'>
                 <div className="font-bold truncate">{name}</div>
@@ -19,4 +19,4 @@ const ContactCardsInfo = ({ img, name, text, unreads, time }) => {
 
 }
 
-export default ContactCardsInfo
+export default ContactCardsInfo;

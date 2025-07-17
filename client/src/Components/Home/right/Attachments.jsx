@@ -9,7 +9,7 @@ const Attachments = () => {
     return (
         <div className="w-full max-w-lg mx-auto p-2">
             <h1 className='mt-0 ml-2 mb-2 font-bold text-base sm:text-lg md:text-xl'>Attachments</h1>
-            <div className='flex flex-wrap gap-2 justify-center mb-4'>
+            <div className='flex flex-wrap gap-7 justify-center mb-4'>
                 <AttachmentCards img={ documentIcon } type={'pdf'}/>
                 <AttachmentCards img={ videoIcon } type={'video'}/>
                 <AttachmentCards img={ musicIcon } type={'audio'}/>

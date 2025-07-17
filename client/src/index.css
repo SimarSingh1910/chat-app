@@ -4,6 +4,8 @@
 
 *{
     font-family: "Playfair Display", serif;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 ::-webkit-scrollbar{
