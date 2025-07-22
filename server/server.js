@@ -19,6 +19,6 @@ app.use(express.json());
 app.use("/login", loginRouter); 
 app.use("/signup", signupRouter);
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on PORT: ${PORT}`);
 });
