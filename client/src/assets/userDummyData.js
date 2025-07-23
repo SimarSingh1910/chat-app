@@ -9,6 +9,7 @@ export const userDummyData = [
         "online":true,
         "time": "10:45 am",
         "unread": 2,
+        "message": "hello",
     },
     {
         "_id": 2,
@@ -20,6 +21,7 @@ export const userDummyData = [
         "online": true,
         "time": "10:45 am",
         "unread": 2,
+        "message": "this is a long very long demo message, way too long to test truncate property",
     },
     {
         "_id": 3,
@@ -31,6 +33,7 @@ export const userDummyData = [
         "online": false,
         "time": "10:45 am",
         "unread": 0,
+        "message": "",
     },
     {
         "_id": 4,
@@ -42,6 +45,7 @@ export const userDummyData = [
         "online": false,
         "time": "10:45 am",
         "unread": 4,
+        "message": "hello",
     },
     
 ]
