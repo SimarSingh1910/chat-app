@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
-const {generateToken} = require("../token");
+const { generateToken } = require("../token");
 
 async function LoginUser(req, res) {
   const { email, password } = req.body;
@@ -20,7 +20,14 @@ async function LoginUser(req, res) {
 
     const token = generateToken(user);
 
-    res.send({ success: "User logged in successfully", uid: token });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 1000, // 1 hour
+      })
+      .send({ success: "User logged in successfully" });
   } catch (error) {
     console.error("Error during login:", error);
     return res.status(500).send({ error: "Internal server error" });

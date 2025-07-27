@@ -1,26 +1,10 @@
-import React from 'react'
-import { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState } from 'react';
 
 const InputForm = () => {
-
     const [value, setValue] = useState('');
     const [pass, setPass] = useState('');
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
-
-    useEffect(() => {
-        if (success) {
-            console.log('Success changed:', success);
-        }
-    }, [success]);
-
-    useEffect(() => {
-        if (error) {
-            console.log('Error changed:', error);
-        }
-    }, [error]);
-
 
     const handleLogin = async () => {
         try {
@@ -39,15 +23,14 @@ const InputForm = () => {
             const data = await res.json();
             if (res.ok) {
                 setSuccess('Login successful!');
+                window.location.replace('/');
             } else {
                 setError(data.message || 'Login failed.');
             }
         } catch (err) {
-            setError(err.message || 'An error occurred during login.');
+            setError(`An error occurred during login: ${err.message}`);
         }
     };
-
-
 
     return (
         <div className='space-y-4'>
@@ -83,11 +66,13 @@ const InputForm = () => {
                 </button>
             </div>
             <button className='bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-lg p-3 w-full hover:from-cyan-600 hover:to-teal-600 transition-all duration-300 font-semibold text-sm sm:text-base'
-            onClick={handleLogin}>
+                onClick={handleLogin}>
                 Login
             </button>
+            {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+            {success && <div className="text-green-500 text-sm mt-2">{success}</div>}
         </div>
-    )
+    );
 }
 
-export default InputForm
+export default InputForm;
