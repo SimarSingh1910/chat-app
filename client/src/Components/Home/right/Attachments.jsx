@@ -7,16 +7,16 @@ import imageIcon from '../../../assets/image-file-svgrepo-com.svg'
 
 const Attachments = () => {
     return (
-        <div>
-            <h1 className='mt-4 ml-5 mb-2 font-bold'>Attachments</h1>
-            <div className='flex flex-row gap-1 mb-4'>
+        <div className="w-full max-w-lg mx-auto p-2">
+            <h1 className='mt-0 ml-2 mb-2 font-bold text-base sm:text-lg md:text-xl'>Attachments</h1>
+            <div className='flex flex-wrap gap-7 justify-center mb-4'>
                 <AttachmentCards img={ documentIcon } type={'pdf'}/>
                 <AttachmentCards img={ videoIcon } type={'video'}/>
                 <AttachmentCards img={ musicIcon } type={'audio'}/>
                 <AttachmentCards img={ imageIcon } type={'image'}/>
             </div>
-            <div className='rounded-full border-1 border-cyan-600 text-center w-50 m-auto'>
-                <p className='text-cyan-600'>view all</p>
+            <div className='rounded-full border-1 border-cyan-600 text-center w-32 sm:w-40 md:w-48 m-auto cursor-pointer transition hover:bg-cyan-50 mt-1'>
+                <p className='text-cyan-600 py-1 text-sm sm:text-base'>view all</p>
             </div>
         </div>
     )

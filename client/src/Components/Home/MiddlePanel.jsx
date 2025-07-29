@@ -1,8 +1,13 @@
 import React from 'react'
+import PersonInfo from './middle/personInfo'
 
-const MiddlePanel = () => {
+
+const MiddlePanel = ({ selectedUser }) => {
+    console.log(selectedUser)
     return (
-        <div>MiddlePanel</div>
+        <div>
+            <PersonInfo selectedUser={selectedUser}/>
+        </div>
     )
 }
 

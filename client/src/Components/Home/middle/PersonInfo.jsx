@@ -1,0 +1,24 @@
+import React from 'react';
+import demoDP from '../../../assets/demo-DP-Raju-Rastogi.jpg';
+import search from '../../../assets/search-svgrepo-com.svg'
+import phone from '../../../assets/phone-svgrepo-com.svg'
+
+const PersonInfo = ({ selectedUser }) => {
+  console.log(selectedUser)
+  console.log(selectedUser.first_name)
+  return (
+    <div>
+      <div className='flex items-center gap-3 py-3 mx-4 border-b-2 border-stone-200'>
+        <img src={demoDP} alt="display pic" className='w-15 rounded-full object-cover h-15'/>
+        <p>{`${selectedUser.first_name} ${selectedUser.last_name}`}</p>
+        <span className='rounded-full w-3 h-3 bg-green-600'></span>
+        <div className='flex items-center ml-70 gap-3'>
+          <img src={search} alt="" className='relative w-9 h-9'/>
+          <img src={phone} alt="" className='relative w-9 h-9'/>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PersonInfo;
