@@ -26,7 +26,14 @@ async function SignupUser(req, res) {
 
     const token = generateToken(newUser);
 
-    res.status(201).send({ success: "User signed up successfully", uid: token });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 1000, // 1 hour
+      })
+      .send({ success: "User signed up successfully" });
   } catch (error) {
     console.error("Signup error:", error);
     return res.status(500).send({ error: "Internal server error" });

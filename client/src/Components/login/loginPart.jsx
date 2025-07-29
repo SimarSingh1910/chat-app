@@ -2,6 +2,7 @@ import { motion as Motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import React from 'react';
 import InputForm from './inputForm';
+import Google from './google';
 
 const LoginPart = () => {
 
@@ -28,8 +29,7 @@ const LoginPart = () => {
                     </h1>
 
                     <InputForm />
-
-                    <div className='mt-6 text-center'>
+                    <div className='mt-4 text-center'>
                         <p className='text-gray-600 text-sm'>
                             Don't have an account?
                             <button className='text-cyan-500 hover:text-cyan-600 cursor-pointer font-semibold ml-1'>
@@ -37,6 +37,12 @@ const LoginPart = () => {
                             </button>
                         </p>
                     </div>
+                    <div className='flex items-center justify-between '>
+                        <hr className='w-full border-gray-300' />
+                        <span className='text-gray-500 mx-4'>or</span>
+                        <hr className='w-full border-gray-300' />
+                    </div>
+                    <Google />
                 </div>
             </Motion.div>
         </div>

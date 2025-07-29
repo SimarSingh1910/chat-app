@@ -3,6 +3,11 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true
+    },
     first_name: {
       type: String,
       required: true,
@@ -32,7 +37,7 @@ const userSchema = new mongoose.Schema(
     online: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   { timestamps: true }
 );
