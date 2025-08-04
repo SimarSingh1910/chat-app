@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
-import SignupPage from './pages/SignupPage';
 import { AuthProvider } from '../src/Components/AuthContext';
 import ProtectedRoute from '../src/Components/ProtectedRoute';
 
@@ -16,7 +15,6 @@ const App = () => (
         </ProtectedRoute>
       } />
       <Route path='/login' element={<LoginPage />} />
-      <Route path='/signup' element={<SignupPage />} />
       <Route path='/profile' element={
         <ProtectedRoute>
           <ProfilePage />

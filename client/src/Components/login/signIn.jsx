@@ -4,10 +4,10 @@ import React from 'react';
 import InputForm from './inputForm';
 import Google from './google';
 
-const LoginPart = () => {
+const SignIn = ({ switchToSignUp }) => {
 
 
-    
+
     const { ref, inView } = useInView({
         triggerOnce: false,
         threshold: 0.2,
@@ -25,16 +25,19 @@ const LoginPart = () => {
             >
                 <div className='bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full'>
                     <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-6 text-center'>
-                        Welcome Back!
+                        Welcome Back!!
                     </h1>
 
                     <InputForm />
                     <div className='mt-4 text-center'>
                         <p className='text-gray-600 text-sm'>
                             Don't have an account?
-                            <button className='text-cyan-500 hover:text-cyan-600 cursor-pointer font-semibold ml-1'>
-                                Sign up
-                            </button>
+                            <span
+                                onClick={switchToSignUp}
+                                className='text-cyan-500 hover:text-cyan-600 cursor-pointer font-semibold ml-1'
+                            >
+                                Sign Up
+                            </span>
                         </p>
                     </div>
                     <div className='flex items-center justify-between '>
@@ -49,4 +52,4 @@ const LoginPart = () => {
     );
 };
 
-export default LoginPart;
+export default SignIn;
