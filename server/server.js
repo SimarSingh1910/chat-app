@@ -42,7 +42,9 @@ app.get(
 );
 app.get(
   "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", {
+    failureRedirect: "http://localhost:5173/login",
+  }),
   (req, res) => {
     const token = generateToken(req.user);
     res.cookie("token", token, {
