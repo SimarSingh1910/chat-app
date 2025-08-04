@@ -17,13 +17,13 @@ const HomePage = () => {
                             <MiddlePanel selectedUser={selectedUser}/>
                         </div>
                         <div className="box-border bg-gray-200 h-full rounded-r-lg">
-                            <RightPanel />
+                            <RightPanel selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
                         </div>
-                        {console.log(selectedUser)}
+                        {console.log(`selectedUser: ${selectedUser}`)}
                     </>
                 ) : (
                     <div className="box-border bg-gray-200 h-full rounded-r-lg">
-                        <RightPanel />
+                        <RightPanel selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
                     </div>
                 )}
             </div>

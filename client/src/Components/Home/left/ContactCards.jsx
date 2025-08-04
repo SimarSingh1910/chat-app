@@ -1,7 +1,7 @@
 import React from 'react';
 import { userDummyData } from '../../../assets/userDummyData';
 import avatar from '../../../assets/avatar.svg';
-import demoDP1 from '../../../assets/demo-DP-NPC.jpg';
+import demoDP1 from '../../../../public/images/demo-DP-NPC.jpg';
 
 const ContactCards = ({ selectedUser, setSelectedUser}) => {
     return (
@@ -30,7 +30,7 @@ const ContactCards = ({ selectedUser, setSelectedUser}) => {
                             <span className="text-xs text-gray-700">{user.time}</span>
                         </div>
                         <div className="flex justify-between items-center mt-1">
-                            <p className="text-xs text-gray-700 truncate max-w-[300px] overflow-hidden whitespace-nowrap">{user.message}</p>
+                            <p className="text-xs text-gray-700 truncate max-w-[280px] overflow-hidden whitespace-nowrap">{user.lastMessage}</p>
                             {user.unread > 0 && (
                                 <span className="h-5 w-5 rounded-full bg-[#a7dae7] text-[10px] text-black flex items-center justify-center">
                                     {user.unread}
