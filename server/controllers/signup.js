@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Profile = require("../models/profile");
 const { generateToken } = require("../token");
 
 async function SignupUser(req, res) {
@@ -23,7 +24,13 @@ async function SignupUser(req, res) {
       password,
     });
     await newUser.save();
-
+    const newProfile = new Profile({
+      first_name,
+      last_name,
+      username,
+      email,
+    });
+    await newProfile.save();
     const token = generateToken(newUser);
 
     res

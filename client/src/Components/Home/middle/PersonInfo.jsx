@@ -1,5 +1,5 @@
 import React from 'react';
-import demoDP from '../../../../public/images/demo-DP-NPC.jpg';
+import demoDP from '/images/demo-DP-NPC.jpg';
 import search from '../../../assets/search-svgrepo-com.svg'
 import phone from '../../../assets/phone-svgrepo-com.svg'
 

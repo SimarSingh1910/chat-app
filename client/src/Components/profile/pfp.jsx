@@ -1,81 +1,51 @@
-import React, { useState, useCallback } from 'react';
-import Cropper from 'react-easy-crop';
+import React, { useState } from 'react';
 import DefaultProfilePic from '../../assets/default-profile-pic.jpg';
 import { Pencil } from 'lucide-react';
-import getCroppedImg from './cropImage';
 
-const Pfp = () => {
-    const [imageSrc, setImageSrc] = useState(null);
-    const [crop, setCrop] = useState({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
-    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-    const [croppedImage, setCroppedImage] = useState(null);
-    const [showCropper, setShowCropper] = useState(false);
+const Pfp = ({ selectedImage, setSelectedImage }) => {
+    const [showSelector, setShowSelector] = useState(false);
 
-    const onCropComplete = useCallback((_, croppedAreaPixels) => {
-        setCroppedAreaPixels(croppedAreaPixels);
-    }, []);
-
-    const handleImageChange = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const imageDataUrl = URL.createObjectURL(file);
-            setImageSrc(imageDataUrl);
-            setShowCropper(true);
-        }
+    const handleSelect = (imgPath) => {
+        setSelectedImage(imgPath);
+        setShowSelector(false);
     };
 
-    const handleCropDone = async () => {
-        try {
-            const cropped = await getCroppedImg(imageSrc, croppedAreaPixels);
-            setCroppedImage(cropped);
-            setShowCropper(false);
-        } catch (e) {
-            console.error(e);
-        }
-    };
+    const avatarImages = Array.from(
+        { length: 105 },
+        (_, i) => `/images/Bust/peep-${i + 1}.png`
+    );
 
     return (
         <div className="w-48 h-48 relative">
-            <div className="absolute inset-0 -z-10 rounded-full 
-                bg-gradient-to-br from-green-400 to-blue-500 
-                blur-[12px] opacity-90" />
-
-            <label className="cursor-pointer block w-full h-full relative">
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                />
+            <div className="cursor-pointer block w-full h-full relative" onClick={() => setShowSelector(true)}>
                 <img
-                    src={croppedImage || DefaultProfilePic}
+                    src={selectedImage || DefaultProfilePic}
                     alt="Profile"
-                    className="w-full h-full rounded-full object-cover transition"
+                    className="w-full h-full rounded-full object-cover transition shadow-[0_0_15px_2px_rgba(6,182,212,0.4),_0_0_25px_5px_rgba(20,184,166,0.4)]
+                   hover:shadow-[0_0_20px_6px_rgba(6,182,212,0.5),_0_0_40px_12px_rgba(20,184,166,0.5)]"
                 />
                 <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 bg-blue-500 w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700">
                     <Pencil size={16} className="text-white" />
                 </div>
-            </label>
+            </div>
 
-            {showCropper && (
-                <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-                    <div className="bg-white p-4 rounded-lg shadow-lg">
-                        <div className="relative w-[300px] h-[300px]">
-                            <Cropper
-                                image={imageSrc}
-                                crop={crop}
-                                zoom={zoom}
-                                aspect={1}
-                                cropShape="round"
-                                onCropChange={setCrop}
-                                onZoomChange={setZoom}
-                                onCropComplete={onCropComplete}
-                            />
+            {showSelector && (
+                <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-10 p-4">
+                    <div className="bg-white p-4 rounded-lg shadow-lg max-w-[700px] max-h-[90vh] overflow-auto">
+                        <h2 className="text-lg font-semibold mb-4">Choose an Avatar</h2>
+                        <div className="grid grid-cols-6 gap-4">
+                            {avatarImages.map((src, index) => (
+                                <img
+                                    key={index}
+                                    src={src}
+                                    alt={`Avatar ${index + 1}`}
+                                    className="w-20 h-20 rounded-full object-cover cursor-pointer border-2 hover:border-blue-500"
+                                    onClick={() => handleSelect(src)}
+                                />
+                            ))}
                         </div>
-                        <div className="flex justify-between mt-4">
-                            <button onClick={() => setShowCropper(false)} className="px-4 py-2 bg-gray-300 rounded hover:cursor-pointer">Cancel</button>
-                            <button onClick={handleCropDone} className="px-4 py-2 bg-blue-600 text-white rounded hover:cursor-pointer">Done</button>
+                        <div className="flex justify-end mt-4">
+                            <button onClick={() => setShowSelector(false)} className="px-4 py-2 bg-gray-300 rounded hover:cursor-pointer">Close</button>
                         </div>
                     </div>
                 </div>

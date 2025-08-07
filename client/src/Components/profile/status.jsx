@@ -9,8 +9,7 @@ const status = [
     'Deep focus mode',
 ];
 
-const Status = () => {
-    const [inputValue, setInputValue] = useState('');
+const Status = ({value,setValue}) => {
     const [showDropdown, setShowDropdown] = useState(false);
     const containerRef = useRef(null);
 
@@ -26,7 +25,7 @@ const Status = () => {
     }, []);
 
     const handleSelect = (mood) => {
-        setInputValue(mood);
+        setValue(mood);
         setShowDropdown(false);
     };
 
@@ -42,8 +41,8 @@ const Status = () => {
                     id="status"
                     className="border border-gray-300 w-full mt-2 rounded-lg placeholder:text-gray-700 bg-gray-100 p-2 focus:outline-none focus:ring-1 focus:ring-black"
                     placeholder="Say something about yourself"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
                 />
                 <button
                     type="button"
@@ -60,7 +59,7 @@ const Status = () => {
                 <ul className="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
                     {status
                         .filter((mood) =>
-                            mood.toLowerCase().includes(inputValue.toLowerCase())
+                            mood.toLowerCase().includes(value.toLowerCase())
                         )
                         .map((mood, index) => (
                             <li
