@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema(
     googleId: {
       type: String,
       unique: true,
-      sparse: true
+      sparse: true,
     },
     first_name: {
       type: String,
@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     online: {
+      type: Boolean,
+      default: false,
+    },
+    profile_created: {
       type: Boolean,
       default: false,
     },

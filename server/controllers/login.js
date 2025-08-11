@@ -27,7 +27,7 @@ async function LoginUser(req, res) {
         sameSite: "lax",
         maxAge: 60 * 60 * 1000, // 1 hour
       })
-      .send({ success: "User logged in successfully" });
+      .send({ profile: user.profile_created });
   } catch (error) {
     console.error("Error during login:", error);
     return res.status(500).send({ error: "Internal server error" });

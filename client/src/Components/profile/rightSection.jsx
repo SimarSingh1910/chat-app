@@ -1,20 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Status from './status'
 import Hobbies from './hobbies'
 import Pronouns from './pronouns'
 import ProfileSettings from './online'
 import Save from './save'
 
-const RightSection = () => {
-    const [onlineStatus, setOnlineStatus] = useState('active');
-    const [statusMood, setStatusMood] = useState('');
-    const [hobbies, setHobbies] = useState({});
-    const [customHobby, setCustomHobby] = useState('');
-    const [pronoun, setPronoun] = useState("");
+const RightSection = (
+    { selectedImage,
+        onlineStatus, setOnlineStatus,
+        statusMood, setStatusMood,
+        hobbies, setHobbies,
+        customHobby, setCustomHobby,
+        pronoun, setPronoun
+    }) => {
 
     return (
         <div className='rounded-2xl shadow-2xl bg-white'>
-            <ProfileSettings value={onlineStatus} setValue={setOnlineStatus } />
+            <ProfileSettings value={onlineStatus} setValue={setOnlineStatus} />
             <Status value={statusMood} setValue={setStatusMood} />
             <Hobbies
                 selected={hobbies}
@@ -25,12 +27,13 @@ const RightSection = () => {
             <Pronouns value={pronoun} setValue={setPronoun} />
             <Save
                 data={{
+                    selectedImage,
                     onlineStatus,
                     statusMood,
                     hobbies,
-                    customHobby,
                     pronoun
                 }}
+                customHobby={customHobby}
             />
         </div>
     )

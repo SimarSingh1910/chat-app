@@ -3,7 +3,7 @@ import React from "react";
 const ProfileSettings = ({value,setValue}) => {
 
     return (
-        <div className="mx-5 mt-2 space-y-4">
+        <div className="mx-5 mt-5 space-y-4">
             <div>
                 <label className="font-medium block mb-1">Online Status</label>
                 <select

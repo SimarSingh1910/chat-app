@@ -54,7 +54,7 @@ const SignupForm = () => {
 
             if (res.ok) {
                 // Redirect if needed:
-                window.location.replace('/');
+                window.location.replace('/profile');
             } else {
                 setError(data.error || 'Signup failed.');
             }

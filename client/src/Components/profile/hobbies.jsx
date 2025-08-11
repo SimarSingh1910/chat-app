@@ -39,7 +39,7 @@ const Hobbies = ({ selected, setSelected, customHobby, setCustomHobby }) => {
                     >
                         <input
                             type="checkbox"
-                            checked={!!selected[topic]}
+                            checked={selected[topic]}
                             onChange={() => handleCheckboxChange(topic)}
                             className="accent-gray-600 w-4 h-4"
                         />

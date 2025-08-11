@@ -1,29 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-const UsernameSec = () => {
-    const [user, setuser] = useState("");
-    useEffect(() => {
-        const getUserData = async () => {
-            try {
-                const res = await fetch("http://localhost:3000/profile", {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include',
-                });
-                const data = await res.json();
-                setuser(data.user);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-
-        getUserData();
-
-    }, [])
-
-
+const UsernameSec = ({ user }) => {
     return (
         <div className='text-center mt-2'>
             {user ?

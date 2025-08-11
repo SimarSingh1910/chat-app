@@ -26,7 +26,11 @@ const InputForm = () => {
 
             const data = await res.json();
             if (res.ok) {
-                window.location.replace('/');
+                if (!data.profile) {
+                    window.location.replace('/profile');
+                } else {
+                    window.location.replace('/');
+                }
             } else {
                 setError(data.error || 'Login failed.');
             }
