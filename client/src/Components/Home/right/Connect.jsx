@@ -4,7 +4,7 @@ import videoIcon from '../../../assets/video-recorder-2-svgrepo-com.svg'
 
 const Connect = () => {
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center mt-7">
             <div className='flex flex-row justify-center items-center gap-6 sm:gap-10 mt-0 w-full'>
                 <div className='flex flex-col items-center'>
                     <img src={messageIcon} alt='' className='w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16' />

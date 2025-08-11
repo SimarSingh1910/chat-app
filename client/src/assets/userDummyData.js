@@ -25,7 +25,7 @@ export const userDummyData = [
         "time": "10:45 am",
         "unread": 2,
         "lastMessage": "this is a long very long demo message, way too long to test truncate property",
-        "designation": "none",
+        "designation": "data analyst",
     },
     {
         "_id": 2,
@@ -38,7 +38,7 @@ export const userDummyData = [
         "time": "10:45 am",
         "unread": 2,
         "lastMessage": "this is a long very long demo message, way too long to test truncate property",
-        "designation": "none",
+        "designation": "software tester",
     },
 ]
 

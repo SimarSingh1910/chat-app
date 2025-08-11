@@ -37,7 +37,7 @@ const Pfp = () => {
 
     return (
         <div className="w-48 h-48 relative">
-            <div className="absolute inset-0 -z-10 rounded-full 
+            <div className="absolute inset-0 rounded-full 
                 bg-gradient-to-br from-green-400 to-blue-500 
                 blur-[12px] opacity-90" />
 

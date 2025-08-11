@@ -4,8 +4,8 @@ import RightSection from '../Components/profile/rightSection'
 
 const ProfilePage = () => {
     return (
-        <div className="w-full h-screen flex justify-center items-center">
-            <div className='grid grid-cols-[1.25fr_2.75fr] gap-4 w-10/12 h-10/12'>
+        <div className="w-full h-screen flex justify-center items-center bg-gray-100">
+            <div className='grid grid-cols-[1.25fr_2.75fr] gap-4 w-10/12 h-auto'>
                 <LeftSection />
                 <RightSection />
             </div>
