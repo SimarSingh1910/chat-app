@@ -24,8 +24,6 @@ const ProfilePage = () => {
                 const data = await res.json();
                 const profile = data.profile;
 
-                console.log(profile);
-
                 setUser(profile);
 
                 if (profile.selectedImage) setSelectedImage(profile.selectedImage);
@@ -53,6 +51,7 @@ const ProfilePage = () => {
             <div className='grid grid-cols-[1.25fr_2.75fr] gap-4 w-10/12 h-auto'>
                 <LeftSection
                     user={user}
+                    setUser={setUser}
                     selectedImage={selectedImage}
                     setSelectedImage={setSelectedImage}
                 />

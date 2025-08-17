@@ -3,6 +3,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const cors = require("cors");
+const User=require('./models/user')
 
 require("dotenv").config();
 require("./passport");
@@ -45,7 +46,7 @@ app.get(
   passport.authenticate("google", {
     failureRedirect: "http://localhost:5173/login",
   }),
-  (req, res) => {
+  async (req, res) => {
     const token = generateToken(req.user);
     res.cookie("token", token, {
       httpOnly: true,
@@ -53,7 +54,12 @@ app.get(
       sameSite: "lax",
       maxAge: 60 * 60 * 1000,
     });
-    res.redirect(`http://localhost:5173/`);
+
+    const user = await User.findOne({ email: req.user.email });
+    if (!user.profile_created) {
+      return res.redirect("http://localhost:5173/profile");
+    }
+    res.redirect("http://localhost:5173/");
   }
 );
 app.get("/auth/logout", (req, res) => {

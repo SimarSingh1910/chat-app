@@ -59,7 +59,10 @@ const Info = () => {
                         </p>
                         <hr className='my-2 border-t border-gray-500' />
                         <p
-                            onClick={() => navigate('/login')}
+                            onClick={() => {
+                                navigate('/login')
+
+                            }}
                             className='cursor-pointer text-sm text-cyan-800'
                         >
                             Logout

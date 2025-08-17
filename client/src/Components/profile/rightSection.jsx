@@ -6,7 +6,9 @@ import ProfileSettings from './online'
 import Save from './save'
 
 const RightSection = (
-    { selectedImage,
+    {
+        user,
+        selectedImage,
         onlineStatus, setOnlineStatus,
         statusMood, setStatusMood,
         hobbies, setHobbies,
@@ -27,6 +29,7 @@ const RightSection = (
             <Pronouns value={pronoun} setValue={setPronoun} />
             <Save
                 data={{
+                    username: user.username,
                     selectedImage,
                     onlineStatus,
                     statusMood,

@@ -8,8 +8,8 @@ async function postProfile(req, res) {
 
   try {
     const updated = await Profile.findOneAndUpdate(
-      { email: req.user.email }, 
-      { $set: req.body }, 
+      { email: req.user.email },
+      { $set: req.body },
       { new: true, runValidators: true }
     );
 
@@ -19,7 +19,12 @@ async function postProfile(req, res) {
 
     await User.updateOne(
       { email: req.user.email },
-      { $set: { profile_created: true } }
+      {
+        $set: {
+          profile_created: true,
+          username: updated.username,
+        },
+      }
     );
 
     res.send({ success: "Profile updated successfully" });
@@ -45,5 +50,21 @@ async function getProfile(req, res) {
     return res.status(500).json({ error: "Server error" });
   }
 }
-
-module.exports = { getProfile, postProfile };
+async function deleteProfile(req, res) {
+  try {
+    const { id } = req.params;
+    const deleted = await Profile.findOneAndDelete({ _id: id });
+    if (!deleted) {
+      return res.status(404).json({ error: "Profile not found" });
+    }
+    const user = await User.findOneAndDelete({ email: deleted.email });
+    if (user) {
+      res.clearCookie("token");
+    }
+    return res.json({ success: "Profile deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting profile:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+}
+module.exports = { getProfile, postProfile, deleteProfile };
