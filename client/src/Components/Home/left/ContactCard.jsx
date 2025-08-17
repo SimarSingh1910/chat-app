@@ -34,7 +34,7 @@ const ContactCard = ({ user, isSelected, onClick }) => {
                 </div>
 
                 <div className="flex justify-between items-center mt-1">
-                    <p className="text-xs text-gray-700 truncate max-w-[280px] overflow-hidden whitespace-nowrap">
+                    <p className="text-xs text-gray-700 truncate max-w-[200px] overflow-hidden whitespace-nowrap">
                         {user.lastMessage}
                     </p>
                     {user.unread > 0 && (
