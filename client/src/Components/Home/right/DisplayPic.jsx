@@ -3,10 +3,10 @@ import profileDummy from '../../../assets/profileData';
 
 const DisplayPic = ({ selectedUser }) => {
     const currentProfile = selectedUser
-        ? profileDummy.find(profile => profile._id === selectedUser._id.toString())
+        ? profileDummy.find(profile => profile.email === selectedUser.email.toString())
         : null;
 
-    selectedUser && console.log(`id of selected User in display pic: ${selectedUser._id}`);
+    selectedUser && console.log(`id of selected User in display pic: ${selectedUser.email}`);
     return (
         <div className="w-full flex flex-col mt-5">
             {/* Profile Image Container */}

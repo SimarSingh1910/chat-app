@@ -5,7 +5,8 @@ export const profileDummy = [
         "status": "exploring new ideas",
         "hobbies": "music",
         "pronouns": "she/her",
-        "online status": "online"
+        "online status": "online",
+        "email" : "dbouskill0@yahoo.com",
     },
     {
         "_id": "1",
@@ -13,7 +14,8 @@ export const profileDummy = [
         "status": "open to chat",
         "hobbies": "dancing",
         "pronouns": "they/them",
-        "online status": "online"
+        "online status": "online",
+        "email" : "cskarin1@histats.com",
     },
     {
         "_id": "2",
@@ -21,7 +23,8 @@ export const profileDummy = [
         "status": "Need a break",
         "hobbies": "drama",
         "pronouns": "N.A.",
-        "online status": "online"
+        "online status": "online",
+        "email" : "tgleaves2@cargocollective.com",
     }
 ];
 
