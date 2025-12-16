@@ -12,7 +12,7 @@ const PersonInfo = ({ selectedUser }) => {
 	);
 
 	return (
-		<div>
+		<div className=''>
 			<div className="flex items-center justify-between py-3 mx-4 border-b-2 border-stone-200">
 				<div className="flex items-center gap-3">
 					{/* Profile Picture */}
