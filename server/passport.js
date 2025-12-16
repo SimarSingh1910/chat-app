@@ -22,12 +22,11 @@ passport.use(
             first_name: profile.name.givenName,
             last_name: profile.name.familyName,
             password: "google-oauth", // or leave blank/null if you handle it
+            profile_created: true,
           });
           await Profile.create({
-            first_name: profile.name.givenName,
-            last_name: profile.name.familyName,
-            email: profile.emails[0].value,
-            username: profile.displayName,
+            user: user._id,
+            displayName: profile.displayName,
           });
         }
         return done(null, user);

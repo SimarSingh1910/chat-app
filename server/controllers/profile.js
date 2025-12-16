@@ -8,7 +8,7 @@ async function postProfile(req, res) {
 
   try {
     const updated = await Profile.findOneAndUpdate(
-      { email: req.user.email },
+      { user: req.user._id },
       { $set: req.body },
       { new: true, runValidators: true }
     );
@@ -18,11 +18,11 @@ async function postProfile(req, res) {
     }
 
     await User.updateOne(
-      { email: req.user.email },
+      { _id: req.user._id },
       {
         $set: {
           profile_created: true,
-          username: updated.username,
+          username: updated.displayName || updated.username,
         },
       }
     );
@@ -40,7 +40,7 @@ async function getProfile(req, res) {
   }
 
   try {
-    const profile = await Profile.findOne({ email: req.user.email });
+    const profile = await Profile.findOne({ user: req.user._id });
     if (!profile) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -57,7 +57,7 @@ async function deleteProfile(req, res) {
     if (!deleted) {
       return res.status(404).json({ error: "Profile not found" });
     }
-    const user = await User.findOneAndDelete({ email: deleted.email });
+    const user = await User.findOneAndDelete({ _id: deleted.user });
     if (user) {
       res.clearCookie("token");
     }

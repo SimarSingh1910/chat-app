@@ -25,12 +25,14 @@ async function SignupUser(req, res) {
     });
     await newUser.save();
     const newProfile = new Profile({
-      first_name,
-      last_name,
-      username,
-      email,
+      user: newUser._id,
+      displayName: username,
     });
     await newProfile.save();
+    await User.updateOne(
+      { _id: newUser._id },
+      { $set: { profile_created: true } }
+    );
     const token = generateToken(newUser);
 
     res

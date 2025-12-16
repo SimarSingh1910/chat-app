@@ -3,7 +3,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const cors = require("cors");
-const User=require('./models/user')
+const User = require("./models/user");
 
 require("dotenv").config();
 require("./passport");
@@ -55,29 +55,27 @@ app.get(
       maxAge: 60 * 60 * 1000,
     });
 
-    const user = await User.findOne({ email: req.user.email });
+    const user = await User.findById(req.user._id);
     if (!user.profile_created) {
       return res.redirect("http://localhost:5173/profile");
     }
     res.redirect("http://localhost:5173/");
   }
 );
-app.get("/auth/logout", (req, res) => {
+app.get("/auth/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) {
       return next(err);
     }
     res.clearCookie("token");
-    res.redirect("/login");
+    res.send({ success: true });
   });
 });
-
 
 // Routes
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
 app.use("/profile", profileRouter);
-
 
 app.listen(PORT, () => {
   console.log(`Server running on PORT: ${PORT}`);

@@ -62,9 +62,8 @@ const Info = () => {
             >
                 {/* Circle Background */}
                 <div
-                    className={`flex items-center justify-center w-7 h-7 rounded-full transition-colors duration-300 cursor-pointer ${
-                        isLocked ? 'bg-stone-100' : ''
-                    }`}
+                    className={`flex items-center justify-center w-7 h-7 rounded-full transition-colors duration-300 cursor-pointer ${isLocked ? 'bg-stone-100' : ''
+                        }`}
                     onClick={handleClick}
                 >
                     <img
@@ -84,12 +83,19 @@ const Info = () => {
                             Edit Profile
                         </p>
                         <hr className="my-2 border-t border-gray-500" />
-                        <p
-                            onClick={() => navigate('/login')}
-                            className="cursor-pointer text-sm text-cyan-800"
+                        <button
+                            onClick={() => {
+                                fetch('http://localhost:3000/auth/logout', {
+                                    method: 'GET',
+                                    credentials: 'include'
+                                }).then(() => {
+                                    navigate('/login', { replace: true });
+                                });
+                            }}
+                            className='cursor-pointer text-sm text-cyan-800'
                         >
                             Logout
-                        </p>
+                        </button>
                     </div>
                 )}
             </div>
