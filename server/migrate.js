@@ -7,7 +7,6 @@ require("dotenv").config();
 
 async function migrate() {
   await mongoose.connect(
-    "mongodb+srv://harshit31:3UiwvfTKQ27RhI9g@chatappdb.9sv6bhb.mongodb.net/ChatAppDB"
   );
 
   // Create collections for conversations and messages
