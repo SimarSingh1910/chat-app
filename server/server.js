@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const cors = require("cors");
 const User = require("./models/user");
+const Profile = require("./models/profile");
 
 require("dotenv").config();
 require("./passport");
@@ -12,6 +13,8 @@ const connectDB = require("./connection");
 const loginRouter = require("./routes/login");
 const signupRouter = require("./routes/signup");
 const profileRouter = require("./routes/profile");
+const conversationRouter = require("./routes/conversation");
+const messageRouter = require("./routes/message");
 const { generateToken } = require("./token");
 
 const app = express();
@@ -35,6 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
+app.use("/images", express.static("public/images"));
 
 // Google Auth Routes
 app.get(
@@ -56,7 +60,8 @@ app.get(
     });
 
     const user = await User.findById(req.user._id);
-    if (!user.profile_created) {
+    const profile = await Profile.findOne({ user: user._id });
+    if (!profile) {
       return res.redirect("http://localhost:5173/profile");
     }
     res.redirect("http://localhost:5173/");
@@ -76,6 +81,8 @@ app.get("/auth/logout", (req, res, next) => {
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
 app.use("/profile", profileRouter);
+app.use("/conversations", conversationRouter);
+app.use("/messages", messageRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on PORT: ${PORT}`);

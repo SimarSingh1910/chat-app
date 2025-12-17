@@ -7,25 +7,23 @@ async function postProfile(req, res) {
   }
 
   try {
+    const { username, ...profileFields } = req.body;
+    if (username) {
+      profileFields.displayName = username; // Sync displayName with username
+    }
     const updated = await Profile.findOneAndUpdate(
-      { user: req.user._id },
-      { $set: req.body },
-      { new: true, runValidators: true }
+      { user: req.user.userId },
+      { $set: profileFields },
+      { new: true, runValidators: true, upsert: true }
     );
 
     if (!updated) {
       return res.status(404).json({ error: "Profile not found" });
     }
 
-    await User.updateOne(
-      { _id: req.user._id },
-      {
-        $set: {
-          profile_created: true,
-          username: updated.displayName || updated.username,
-        },
-      }
-    );
+    if (username) {
+      await User.updateOne({ _id: req.user.userId }, { $set: { username } });
+    }
 
     res.send({ success: "Profile updated successfully" });
   } catch (err) {
@@ -40,11 +38,30 @@ async function getProfile(req, res) {
   }
 
   try {
-    const profile = await Profile.findOne({ user: req.user._id });
+    let profile = await Profile.findOne({ user: req.user.userId }).populate(
+      "user",
+      "first_name last_name username email"
+    );
     if (!profile) {
-      return res.status(404).json({ error: "User not found" });
+      // Create profile if not exists
+      profile = new Profile({
+        user: req.user.userId,
+        displayName: req.user.email.split("@")[0], // default
+      });
+      await profile.save();
+      profile = await Profile.findOne({ user: req.user.userId }).populate(
+        "user",
+        "first_name last_name username email"
+      );
     }
-    return res.json({ profile });
+    const profileData = {
+      ...profile.toObject(),
+      first_name: profile.user?.first_name || "",
+      last_name: profile.user?.last_name || "",
+      username: profile.user?.username || "",
+      email: profile.user?.email || "",
+    };
+    return res.json({ profile: profileData });
   } catch (err) {
     console.error("Error fetching profile:", err);
     return res.status(500).json({ error: "Server error" });

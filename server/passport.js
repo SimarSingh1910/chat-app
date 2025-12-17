@@ -18,11 +18,12 @@ passport.use(
           user = await User.create({
             googleId: profile.id,
             email: profile.emails[0].value,
-            username: profile.displayName,
+            username:
+              profile.emails[0].value.split("@")[0] +
+              Math.random().toString(36).substr(2, 8),
             first_name: profile.name.givenName,
             last_name: profile.name.familyName,
             password: "google-oauth", // or leave blank/null if you handle it
-            profile_created: true,
           });
           await Profile.create({
             user: user._id,
