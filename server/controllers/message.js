@@ -52,6 +52,23 @@ async function sendMessage(req, res) {
       "username"
     );
 
+    // Real-time: notify the other participant(s) of the new message and
+    // push an updated conversation preview for their inbox list.
+    const io = req.app.get("io");
+    if (io) {
+      const payload = {
+        message: populatedMessage,
+        conversationId: conversationId.toString(),
+      };
+      for (const p of otherParticipants) {
+        io.to(p.toString()).emit("new_message", payload);
+        io.to(p.toString()).emit("conversation_updated", {
+          conversationId: conversationId.toString(),
+          lastMessage: update.lastMessage,
+        });
+      }
+    }
+
     res.json({ message: populatedMessage });
   } catch (err) {
     console.error("Error sending message:", err);
@@ -115,6 +132,22 @@ async function markAsRead(req, res) {
     await Conversation.findByIdAndUpdate(conversationId, {
       $set: { [`unreadCounts.${req.user.userId}`]: 0 },
     });
+
+    // Real-time: send read receipts to the other participant(s) so their
+    // sent messages can show as "read".
+    const io = req.app.get("io");
+    if (io) {
+      const others = conversation.participants.filter(
+        (p) => p.toString() !== req.user.userId
+      );
+      for (const p of others) {
+        io.to(p.toString()).emit("messages_read", {
+          conversationId: conversationId.toString(),
+          readerId: req.user.userId,
+          readAt: new Date(),
+        });
+      }
+    }
 
     res.json({ success: true });
   } catch (err) {

@@ -1,57 +1,53 @@
 import React from 'react';
-import profileDummyData from '../../../assets/profileData';
-import search from '../../../assets/search-svgrepo-com.svg';
-import phone from '../../../assets/phone-svgrepo-com.svg';
+import { ArrowLeft, Info } from 'lucide-react';
+import Avatar from '../../common/Avatar';
+import { useChat } from '../../ChatContext';
+import { useSocket } from '../../SocketContext';
 
-const PersonInfo = ({ selectedUser }) => {
-	if (!selectedUser) return <div>Select a user</div>;
+// Header of the open chat: who you're talking to + their live status.
+const PersonInfo = ({ onToggleInfo, onBack }) => {
+    const { activeConversation, getOtherUser, isTyping } = useChat();
+    const { isOnline } = useSocket();
 
-	// Find profile info by matching email
-	const profile = profileDummyData.find(
-		(profile) => profile.email === selectedUser.email
-	);
+    const other = getOtherUser(activeConversation);
+    if (!other) return null;
 
-	return (
-		<div>
-			<div className="flex items-center justify-between py-3 mx-4 border-b-2 border-stone-200">
-				<div className="flex items-center gap-3">
-					{/* Profile Picture */}
-					<img
-						src={
-							profile
-								? `/${profile.dp}`
-								: '/images/default-profile-pic.jpg'
-						}
-						alt="display pic"
-						className="w-14 h-14 rounded-full object-cover"
-					/>
+    const online = isOnline(other._id, other.online);
+    const typing = isTyping(activeConversation._id);
 
-					{/* Name and Status */}
-					<div className="flex flex-col">
-						<p className="font-semibold">{`${selectedUser.first_name} ${selectedUser.last_name}`}</p>
-						<div className="flex items-center gap-2">
-							<span className="rounded-full w-2 h-2 bg-green-600"></span>
-							<span className="text-sm text-gray-600">online</span>
-						</div>
-					</div>
-				</div>
+    const status = typing ? 'typing…' : online ? 'online' : 'offline';
 
-				{/* Action Icons */}
-				<div className="flex items-center gap-4">
-					<img
-						src={search}
-						alt="search"
-						className="w-6 h-6 cursor-pointer"
-					/>
-					<img
-						src={phone}
-						alt="phone"
-						className="w-6 h-6 cursor-pointer"
-					/>
-				</div>
-			</div>
-		</div>
-	);
+    return (
+        <div className="flex items-center gap-3 px-4 py-3 bg-white/90 backdrop-blur border-b border-gray-200">
+            {/* Back to inbox on small screens */}
+            <button
+                onClick={onBack}
+                aria-label="Back"
+                className="md:hidden p-1.5 -ml-1 rounded-full text-gray-500 hover:bg-gray-100 cursor-pointer"
+            >
+                <ArrowLeft size={18} />
+            </button>
+
+            <Avatar src={other.avatar} alt={other.username} online={online} />
+
+            <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-900 truncate">
+                    {other.first_name} {other.last_name}
+                </p>
+                <p className={`text-xs ${typing ? 'text-cyan-600 italic font-medium' : online ? 'text-emerald-600' : 'text-gray-400'}`}>
+                    {status}
+                </p>
+            </div>
+
+            <button
+                onClick={onToggleInfo}
+                aria-label="Contact info"
+                className="p-2 rounded-full text-gray-500 hover:bg-cyan-50 hover:text-cyan-700 transition-colors cursor-pointer"
+            >
+                <Info size={19} />
+            </button>
+        </div>
+    );
 };
 
 export default PersonInfo;

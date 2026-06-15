@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import api from '../../lib/api';
 
 const Save = ({ data, customHobby }) => {
     const handleSave = async () => {
@@ -16,10 +16,7 @@ const Save = ({ data, customHobby }) => {
         };
 
         try {
-            await axios.post('http://localhost:3000/profile', payload, {
-                withCredentials: true,
-            });
-            alert('Profile saved successfully!');
+            await api.post('/profile', payload);
             window.location.replace('/');
         } catch (error) {
             console.error('Save failed:', error);

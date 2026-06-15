@@ -40,7 +40,7 @@ async function SignupUser(req, res) {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        maxAge: 60 * 60 * 1000, // 1 hour
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (matches JWT expiry)
       })
       .send({ success: "User signed up successfully" });
   } catch (error) {

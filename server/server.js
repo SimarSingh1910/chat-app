@@ -1,4 +1,5 @@
 const express = require("express");
+const http = require("http");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
@@ -15,7 +16,9 @@ const signupRouter = require("./routes/signup");
 const profileRouter = require("./routes/profile");
 const conversationRouter = require("./routes/conversation");
 const messageRouter = require("./routes/message");
+const userRouter = require("./routes/user");
 const { generateToken } = require("./token");
+const { initSocket } = require("./socket");
 
 const app = express();
 
@@ -56,7 +59,7 @@ app.get(
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (matches JWT expiry)
     });
 
     const user = await User.findById(req.user._id);
@@ -83,7 +86,15 @@ app.use("/signup", signupRouter);
 app.use("/profile", profileRouter);
 app.use("/conversations", conversationRouter);
 app.use("/messages", messageRouter);
+app.use("/users", userRouter);
 
-app.listen(PORT, () => {
+// HTTP server + Socket.io (real-time layer)
+const server = http.createServer(app);
+const io = initSocket(server);
+
+// Make io available to REST controllers via req.app.get("io")
+app.set("io", io);
+
+server.listen(PORT, () => {
   console.log(`Server running on PORT: ${PORT}`);
 });
