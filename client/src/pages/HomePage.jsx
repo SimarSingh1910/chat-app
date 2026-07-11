@@ -1,48 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import LeftPanel from '../Components/Home/LeftPanel';
 import MiddlePanel from '../Components/Home/MiddlePanel';
 import RightPanel from '../Components/Home/RightPanel';
+import { useChat } from '../Components/ChatContext';
+import { useFriends } from '../Components/FriendsContext';
 
 const HomePage = () => {
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [showRightPanel, setShowRightPanel] = useState(false);
+    const { activeConversation, closeConversation, startConversation } = useChat();
+    const { showToast } = useFriends();
+    const [showInfo, setShowInfo] = useState(false);
+    const [leftTab, setLeftTab] = useState('chats');
 
-    // Handler to be passed to LeftPanel/ContactCards
-    const handleSelectUser = (user) => {
-        setSelectedUser(user);
-        setShowRightPanel(true);
-    };
+    // Shared Message action: reuse ChatContext's create/open flow, then switch
+    // to the Chats tab. startConversation returns null on failure (incl. the
+    // 403 hard-gate) — surface a friendly toast instead of a silent failure.
+    const handleMessage = useCallback(async (user) => {
+        const conversation = await startConversation(user);
+        if (conversation) {
+            setLeftTab('chats');
+            setShowInfo(false);
+        } else {
+            showToast('You can only chat with a friend');
+        }
+    }, [startConversation, showToast]);
 
     return (
-        <div className="h-screen">
-            <div
-                className={`grid gap-[2px] border-purple-500 border-2 h-full p-4 rounded-lg transition-all duration-300
-                ${showRightPanel ? 'grid-cols-[1fr_2fr_1fr]' : 'grid-cols-[1fr_2fr]'}`}
-            >
-                {/* Left Panel */}
-                <div className="box-border bg-gray-200 h-full rounded-l-lg">
-                    <LeftPanel
-                        selectedUser={selectedUser}
-                        setSelectedUser={handleSelectUser}
-                    />
-                </div>
+        <div className="h-screen bg-gradient-to-br from-cyan-100 via-white to-teal-100 md:p-4">
+            <div className="relative flex h-full bg-white md:rounded-2xl overflow-hidden shadow-2xl ring-1 ring-black/5">
+                {/* Inbox — on mobile it hides once a chat is open */}
+                <aside
+                    className={`w-full md:w-80 lg:w-87 shrink-0 border-r border-gray-200 bg-white
+                        ${activeConversation ? 'hidden md:flex' : 'flex'} flex-col min-h-0`}
+                >
+                    <LeftPanel leftTab={leftTab} setLeftTab={setLeftTab} onMessage={handleMessage} />
+                </aside>
 
-                {/* Middle Panel */}
-                <div
-                    className={`border-purple-500 bg-gray-300 border-2 border-r-0 border-l-0 box-border h-full
-                    ${!showRightPanel ? 'rounded-r-lg' : ''}`}
+                {/* Conversation thread */}
+                <main
+                    className={`flex-1 min-w-0 bg-[#eef6f8]
+                        ${activeConversation ? 'flex' : 'hidden md:flex'} flex-col min-h-0`}
                 >
                     <MiddlePanel
-                        selectedUser={selectedUser}
-                        setSelectedUser={handleSelectUser}
+                        onToggleInfo={() => setShowInfo((v) => !v)}
+                        onBack={closeConversation}
                     />
-                </div>
+                </main>
 
-                {/* Right Panel */}
-                {showRightPanel && (
-                    <div className="box-border bg-gray-200 h-full rounded-r-lg">
-                        <RightPanel selectedUser={selectedUser} />
-                    </div>
+                {/* Contact info — inline column on large screens, overlay below */}
+                {showInfo && activeConversation && (
+                    <aside
+                        className="absolute inset-y-0 right-0 z-20 w-full sm:w-96 lg:static lg:w-80 xl:w-88 shrink-0
+                            bg-white border-l border-gray-200 shadow-2xl lg:shadow-none flex flex-col min-h-0"
+                    >
+                        <RightPanel onClose={() => setShowInfo(false)} onMessage={handleMessage} />
+                    </aside>
                 )}
             </div>
         </div>

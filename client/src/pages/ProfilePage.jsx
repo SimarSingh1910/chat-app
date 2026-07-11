@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ArrowLeft } from 'lucide-react'
 import LeftSection from '../Components/profile/leftSection'
 import RightSection from '../Components/profile/rightSection'
+import api from '../lib/api'
 
 const ProfilePage = () => {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -14,17 +17,8 @@ const ProfilePage = () => {
     useEffect(() => {
         const getUserData = async () => {
             try {
-                const res = await fetch("http://localhost:3000/profile", {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include',
-                });
-                const data = await res.json();
+                const { data } = await api.get('/profile');
                 const profile = data.profile;
-
-                console.log(profile);
 
                 setUser(profile);
 
@@ -49,28 +43,48 @@ const ProfilePage = () => {
     }, []);
 
     return (
-        <div className="w-full h-screen flex justify-center items-center bg-gray-100">
-            <div className='grid grid-cols-[1.25fr_2.75fr] gap-4 w-10/12 h-auto'>
-                <LeftSection
-                    user={user}
-                    selectedImage={selectedImage}
-                    setSelectedImage={setSelectedImage}
-                />
-                <RightSection
-                    user={user}
-                    selectedImage={selectedImage}
-                    setSelectedImage={setSelectedImage}
-                    onlineStatus={onlineStatus}
-                    setOnlineStatus={setOnlineStatus}
-                    statusMood={statusMood}
-                    setStatusMood={setStatusMood}
-                    hobbies={hobbies}
-                    setHobbies={setHobbies}
-                    customHobby={customHobby}
-                    setCustomHobby={setCustomHobby}
-                    pronoun={pronoun}
-                    setPronoun={setPronoun}
-                />
+        <div className="min-h-screen bg-slate-50">
+            <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+                {/* Header */}
+                <div className="mb-8">
+                    <Link
+                        to="/"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 transition-colors hover:text-slate-900"
+                    >
+                        <ArrowLeft size={16} /> Back to chats
+                    </Link>
+                    <h1 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                        Edit profile
+                    </h1>
+                    <p className="mt-1 text-sm text-slate-500">
+                        Customize how you appear to others across ChatApp.
+                    </p>
+                </div>
+
+                {/* Content */}
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
+                    <LeftSection
+                        user={user}
+                        setUser={setUser}
+                        selectedImage={selectedImage}
+                        setSelectedImage={setSelectedImage}
+                    />
+                    <RightSection
+                        user={user}
+                        selectedImage={selectedImage}
+                        setSelectedImage={setSelectedImage}
+                        onlineStatus={onlineStatus}
+                        setOnlineStatus={setOnlineStatus}
+                        statusMood={statusMood}
+                        setStatusMood={setStatusMood}
+                        hobbies={hobbies}
+                        setHobbies={setHobbies}
+                        customHobby={customHobby}
+                        setCustomHobby={setCustomHobby}
+                        pronoun={pronoun}
+                        setPronoun={setPronoun}
+                    />
+                </div>
             </div>
         </div>
     )

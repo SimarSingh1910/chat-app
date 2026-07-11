@@ -1,16 +1,29 @@
-import { div } from 'framer-motion/client'
-import React from 'react'
+import React from 'react';
+import { Search as SearchIcon, X } from 'lucide-react';
 
-const Search = () => {
-    return (
-        <div className='flex flex-col justify-between'>
-            <div className='bg-white w-80 m-auto p-2 mt-5 rounded-full flex items-center'>
-                <img src='src/assets/search-svgrepo-com.svg' className='w-5 inline' alt='search icon' />
-                <input type='text' placeholder='Search here...' className='w-32 placeholder:font-sans focus:outline-none focus:ring-0 focus:border-transparent placeholder-gray-500 placeholder-opacity-75 ml-2' />
-            </div>
-            <hr className='border border-gray-300 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto mt-3' />
+// Controlled search box — searches people to start a new chat.
+const Search = ({ value, onChange }) => (
+    <div className="px-4 pb-3">
+        <div className="flex items-center gap-2 bg-gray-100 focus-within:bg-white focus-within:ring-2 focus-within:ring-cyan-400 rounded-full px-4 py-2 transition-all">
+            <SearchIcon size={16} className="text-gray-400 shrink-0" />
+            <input
+                type="text"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="Search people to chat with…"
+                className="w-full bg-transparent text-sm placeholder-gray-400 focus:outline-none"
+            />
+            {value && (
+                <button
+                    onClick={() => onChange('')}
+                    aria-label="Clear search"
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer shrink-0"
+                >
+                    <X size={15} />
+                </button>
+            )}
         </div>
-    )
-}
+    </div>
+);
 
-export default Search
+export default Search;

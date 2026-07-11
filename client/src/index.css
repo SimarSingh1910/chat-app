@@ -2,11 +2,83 @@
 
 @import "tailwindcss";
 
-*{
-    font-family: "Playfair Display", serif;
+* {
     box-sizing: border-box;
 }
 
-::-webkit-scrollbar{
-    display: hidden;
+body {
+    font-family: "Raleway", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Branding font for headings/wordmarks */
+.font-display {
+    font-family: "Playfair Display", serif;
+}
+
+/* Slim, unobtrusive scrollbars for chat panes */
+.chat-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+    background: rgba(8, 145, 178, 0.25);
+    border-radius: 9999px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(8, 145, 178, 0.45);
+}
+
+.chat-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(8, 145, 178, 0.25) transparent;
+}
+
+/* Typing indicator dots */
+@keyframes typing-bounce {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+
+    30% {
+        transform: translateY(-4px);
+        opacity: 1;
+    }
+}
+
+.typing-dot {
+    animation: typing-bounce 1.2s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+/* Message entrance */
+@keyframes message-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-in {
+    animation: message-in 0.18s ease-out;
 }

@@ -1,21 +1,19 @@
 import React from 'react'
 
-const Pronouns = ({value,setValue}) => {
+const Pronouns = ({ value, setValue }) => {
     return (
-        <div className='m-5'>
-            <h3 className='font-medium mb-1'>Pronouns</h3>
-            <div>
-                <input
-                    type="text"
-                    name="pronoun"
-                    id="pronoun"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    className='border border-gray-300 w-full mt-2 rounded-lg placeholder:text-gray-700 bg-gray-100 p-2 focus:outline-none focus:ring-1 focus:ring-black'
-                    placeholder='i.e He/Him ,She/Her ,etc'
-                />
-            </div>
-        </div >
+        <div>
+            <label htmlFor="pronoun" className='mb-1.5 block text-sm font-medium text-slate-700'>Pronouns</label>
+            <input
+                type="text"
+                name="pronoun"
+                id="pronoun"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                className='w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20'
+                placeholder='e.g. He/Him, She/Her, They/Them'
+            />
+        </div>
     )
 }
 

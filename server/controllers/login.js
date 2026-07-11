@@ -4,7 +4,6 @@ const { generateToken } = require("../token");
 
 async function LoginUser(req, res) {
   const { email, password } = req.body;
-  console.log("Login attempt:", email, password);
   if (!email || !password) {
     return res.status(400).send({ error: "Email and password are required" });
   }
@@ -25,7 +24,7 @@ async function LoginUser(req, res) {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        maxAge: 60 * 60 * 1000, // 1 hour
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (matches JWT expiry)
       })
       .send({ profile: user.profile_created });
   } catch (error) {
