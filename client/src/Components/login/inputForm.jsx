@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { Mail, Lock, ArrowLeft } from 'lucide-react';
 import api from '../../lib/api';
 
 const inputClass =
-    'border border-gray-300 rounded-lg p-3 w-full focus:border-2 focus:border-cyan-500 hover:border-cyan-400 outline-none transition-all duration-200 text-sm sm:text-base';
+    'w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20';
 const primaryBtnClass =
-    'bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-lg p-3 w-full hover:from-cyan-600 hover:to-teal-600 transition-all duration-300 font-semibold text-sm sm:text-base disabled:opacity-60 disabled:cursor-not-allowed';
+    'w-full rounded-lg bg-cyan-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-cyan-700 active:scale-[.99] disabled:cursor-not-allowed disabled:opacity-60';
 const linkClass =
-    'text-cyan-500 hover:text-cyan-600 cursor-pointer font-semibold text-sm sm:text-base';
+    'font-semibold text-cyan-600 transition-colors hover:text-cyan-700 cursor-pointer';
 
 const InputForm = () => {
     const [value, setValue] = useState('');
@@ -77,46 +78,52 @@ const InputForm = () => {
 
     if (showForgot) {
         return (
-            <div className='space-y-4'>
+            <div className="space-y-4">
                 {forgotSent ? (
-                    <div className='text-center space-y-3'>
-                        <h2 className='text-lg font-semibold text-gray-800'>Check your email</h2>
-                        <p className='text-sm text-gray-600'>
+                    <div className="space-y-3 text-center">
+                        <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-cyan-50 text-cyan-600">
+                            <Mail size={22} />
+                        </div>
+                        <h2 className="text-lg font-semibold text-slate-900">Check your email</h2>
+                        <p className="text-sm text-slate-500">
                             If an account exists for{' '}
-                            <span className='font-medium'>{forgotEmail}</span>, we've sent a link to
-                            reset your password. The link expires in 1 hour.
+                            <span className="font-medium text-slate-700">{forgotEmail}</span>, we've sent a
+                            link to reset your password. The link expires in 1 hour.
                         </p>
-                        <button onClick={closeForgot} className={linkClass}>
-                            Back to sign in
+                        <button onClick={closeForgot} className={`inline-flex items-center gap-1.5 ${linkClass}`}>
+                            <ArrowLeft size={15} /> Back to sign in
                         </button>
                     </div>
                 ) : (
                     <>
-                        <h2 className='text-lg font-semibold text-gray-800 text-center'>
-                            Reset your password
-                        </h2>
-                        <p className='text-sm text-gray-600 text-center'>
-                            Enter your email and we'll send you a reset link.
-                        </p>
-                        <input
-                            type='email'
-                            value={forgotEmail}
-                            onChange={(e) => setForgotEmail(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleForgotSubmit()}
-                            placeholder='Email'
-                            autoFocus
-                            className={inputClass}
-                        />
+                        <div>
+                            <h2 className="text-lg font-semibold text-slate-900">Reset your password</h2>
+                            <p className="mt-1 text-sm text-slate-500">
+                                Enter your email and we'll send you a reset link.
+                            </p>
+                        </div>
+                        <div className="relative">
+                            <Mail size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                            <input
+                                type="email"
+                                value={forgotEmail}
+                                onChange={(e) => setForgotEmail(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleForgotSubmit()}
+                                placeholder="Email"
+                                autoFocus
+                                className={inputClass}
+                            />
+                        </div>
                         <button disabled={forgotLoading} onClick={handleForgotSubmit} className={primaryBtnClass}>
                             {forgotLoading ? 'Sending…' : 'Send reset link'}
                         </button>
-                        <div className='text-center'>
-                            <button onClick={closeForgot} className={linkClass}>
-                                Back to sign in
+                        <div className="text-center">
+                            <button onClick={closeForgot} className={`inline-flex items-center gap-1.5 text-sm ${linkClass}`}>
+                                <ArrowLeft size={15} /> Back to sign in
                             </button>
                         </div>
                         {forgotError && (
-                            <div className='text-red-500 text-sm mt-2 text-center'>{forgotError}</div>
+                            <p className="text-center text-sm text-red-500">{forgotError}</p>
                         )}
                     </>
                 )}
@@ -125,36 +132,45 @@ const InputForm = () => {
     }
 
     return (
-        <div className='space-y-4'>
-            <input
-                type="email"
-                name="email"
-                id="email"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                placeholder="Email"
-                className={inputClass}
-            />
+        <div className="space-y-4">
+            <div className="relative">
+                <Mail size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    placeholder="Email"
+                    className={inputClass}
+                />
+            </div>
 
-            <input
-                type="password"
-                name="password"
-                id="password"
-                value={pass}
-                onChange={(e) => setPass(e.target.value)}
-                onKeyDown={handleEnter}
-                placeholder="Password"
-                className={inputClass}
-            />
-            <div className='flex items-center justify-end'>
-                <button onClick={openForgot} className={linkClass}>
-                    Forgot Password?
+            <div className="relative">
+                <Lock size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                    onKeyDown={handleEnter}
+                    placeholder="Password"
+                    className={inputClass}
+                />
+            </div>
+
+            <div className="flex items-center justify-end">
+                <button onClick={openForgot} className={`text-sm ${linkClass}`}>
+                    Forgot password?
                 </button>
             </div>
+
             <button className={primaryBtnClass} onClick={handleLogin}>
-                Sign In
+                Sign in
             </button>
-            {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
+
+            {error && <p className="text-center text-sm text-red-500">{error}</p>}
         </div>
     );
 }

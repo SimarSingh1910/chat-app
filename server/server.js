@@ -18,6 +18,7 @@ const profileRouter = require("./routes/profile");
 const conversationRouter = require("./routes/conversation");
 const messageRouter = require("./routes/message");
 const userRouter = require("./routes/user");
+const friendsRouter = require("./routes/friends");
 const { generateToken } = require("./token");
 const { initSocket } = require("./socket");
 
@@ -92,6 +93,7 @@ app.use("/profile", profileRouter);
 app.use("/conversations", conversationRouter);
 app.use("/messages", messageRouter);
 app.use("/users", userRouter);
+app.use("/friends", friendsRouter);
 
 // HTTP server + Socket.io (real-time layer)
 const server = http.createServer(app);

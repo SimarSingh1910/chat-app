@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { X, Mail, AtSign, Sparkles, TimerReset } from 'lucide-react';
+import { X, Mail, AtSign, Sparkles, TimerReset, MessageCircle, UserPlus, UserRoundMinus, Clock, Check } from 'lucide-react';
 import Avatar from '../common/Avatar';
 import api from '../../lib/api';
 import { useChat } from '../ChatContext';
 import { useSocket } from '../SocketContext';
+import { useFriends } from '../FriendsContext';
 
 // Contact details for the person in the open conversation.
-const RightPanel = ({ onClose }) => {
+const RightPanel = ({ onClose, onMessage }) => {
     const { activeConversation, getOtherUser } = useChat();
     const { isOnline } = useSocket();
+    const { getRelationship, sendRequest, acceptRequest, cancelRequest, unfriend, isBusy } = useFriends();
 
     const other = getOtherUser(activeConversation);
     const [details, setDetails] = useState(null);
@@ -30,6 +32,15 @@ const RightPanel = ({ onClose }) => {
 
     const online = isOnline(other._id, other.online);
     const info = details || other;
+    const rel = getRelationship(other._id, details?.relationship);
+    const busy = isBusy(other._id);
+    const actionBtn =
+        'inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-not-allowed';
+    const handleUnfriend = () => {
+        if (window.confirm(`Remove ${info.first_name} ${info.last_name} from your friends?`)) {
+            unfriend(other._id);
+        }
+    };
     // Profiles store hobbies as an array; older docs may have a {name: bool} map.
     const hobbies = Array.isArray(info.hobbies)
         ? info.hobbies
@@ -64,6 +75,35 @@ const RightPanel = ({ onClose }) => {
                 >
                     {online ? 'Online' : 'Offline'}
                 </span>
+
+                {/* Relationship action */}
+                <div className="mt-4 flex items-center justify-center gap-2">
+                    {rel === 'friend' && (
+                        <>
+                            <button onClick={() => onMessage?.(info)} className={`${actionBtn} bg-cyan-600 text-white hover:bg-cyan-700`}>
+                                <MessageCircle size={14} /> Message
+                            </button>
+                            <button onClick={handleUnfriend} disabled={busy} className={`${actionBtn} border border-red-200 text-red-600 hover:bg-red-50`}>
+                                <UserRoundMinus size={14} /> Unfriend
+                            </button>
+                        </>
+                    )}
+                    {rel === 'none' && (
+                        <button onClick={() => sendRequest(other._id)} disabled={busy} className={`${actionBtn} bg-cyan-50 text-cyan-700 hover:bg-cyan-100`}>
+                            <UserPlus size={14} /> Add friend
+                        </button>
+                    )}
+                    {rel === 'outgoing' && (
+                        <button onClick={() => cancelRequest(other._id)} disabled={busy} title="Tap to cancel" className={`${actionBtn} bg-gray-100 text-gray-600 hover:bg-gray-200`}>
+                            <Clock size={14} /> Requested
+                        </button>
+                    )}
+                    {rel === 'incoming' && (
+                        <button onClick={() => acceptRequest(other._id)} disabled={busy} className={`${actionBtn} bg-cyan-600 text-white hover:bg-cyan-700`}>
+                            <Check size={14} /> Accept
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* Status mood */}

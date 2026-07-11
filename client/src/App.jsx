@@ -7,13 +7,15 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import { AuthProvider } from '../src/Components/AuthContext';
 import { SocketProvider } from '../src/Components/SocketContext';
 import { ChatProvider } from '../src/Components/ChatContext';
+import { FriendsProvider } from '../src/Components/FriendsContext';
 import ProtectedRoute from '../src/Components/ProtectedRoute';
 
 const App = () => (
   <AuthProvider>
     <SocketProvider>
       <ChatProvider>
-        <Routes>
+        <FriendsProvider>
+          <Routes>
           <Route path='/' element={
             <ProtectedRoute>
               <HomePage />
@@ -26,7 +28,8 @@ const App = () => (
               <ProfilePage />
             </ProtectedRoute>
           } />
-        </Routes>
+          </Routes>
+        </FriendsProvider>
       </ChatProvider>
     </SocketProvider>
   </AuthProvider>

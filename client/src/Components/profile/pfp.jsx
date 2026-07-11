@@ -75,29 +75,32 @@ const Pfp = ({ selectedImage, setSelectedImage }) => {
     );
 
     const tabClass = (active) =>
-        `px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer ${
-            active ? 'bg-cyan-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+        `rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+            active ? 'bg-cyan-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
         }`;
 
     return (
-        <div className="w-48 h-48 relative">
-            <div className="cursor-pointer block w-full h-full relative" onClick={() => setShowSelector(true)}>
+        <div className="relative h-36 w-36">
+            <button
+                type="button"
+                className="group relative block h-full w-full rounded-full"
+                onClick={() => setShowSelector(true)}
+            >
                 <img
                     src={selectedImage || DefaultProfilePic}
                     alt="Profile"
-                    className="w-full h-full rounded-full object-cover transition shadow-[0_0_15px_2px_rgba(6,182,212,0.4),_0_0_25px_5px_rgba(20,184,166,0.4)]
-                   hover:shadow-[0_0_20px_6px_rgba(6,182,212,0.5),_0_0_40px_12px_rgba(20,184,166,0.5)]"
+                    className="h-full w-full rounded-full object-cover ring-4 ring-slate-100 transition group-hover:ring-cyan-100"
                 />
-                <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 bg-blue-500 w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700">
-                    <Pencil size={16} className="text-white" />
-                </div>
-            </div>
+                <span className="absolute bottom-1 right-1 grid h-9 w-9 place-items-center rounded-full bg-cyan-600 text-white ring-4 ring-white transition-colors group-hover:bg-cyan-700">
+                    <Pencil size={15} />
+                </span>
+            </button>
 
             {showSelector && (
-                <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-10 p-4">
-                    <div className="bg-white p-4 rounded-lg shadow-lg max-w-[700px] w-full max-h-[90vh] overflow-auto">
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-lg font-semibold">Choose an Avatar</h2>
+                <div className="fixed inset-0 z-30 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
+                    <div className="max-h-[90vh] w-full max-w-[700px] overflow-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
+                        <div className="mb-4 flex items-center justify-between">
+                            <h2 className="text-lg font-semibold text-slate-900">Choose an avatar</h2>
                             <div className="flex gap-2">
                                 <button onClick={() => setMode('presets')} className={tabClass(mode === 'presets')}>
                                     Presets
@@ -108,18 +111,23 @@ const Pfp = ({ selectedImage, setSelectedImage }) => {
                             </div>
                         </div>
 
-                        {/* --- PRESETS (unchanged 105-avatar grid) --- */}
+                        {/* --- PRESETS (105-avatar grid) --- */}
                         {mode === 'presets' && (
-                            <div className="grid grid-cols-6 gap-4">
-                                {avatarImages.map((src, index) => (
-                                    <img
-                                        key={index}
-                                        src={src}
-                                        alt={`Avatar ${index + 1}`}
-                                        className="w-20 h-20 rounded-full object-cover cursor-pointer border-2 hover:border-blue-500"
-                                        onClick={() => handleSelect(src)}
-                                    />
-                                ))}
+                            <div className="grid grid-cols-5 gap-3 sm:grid-cols-6">
+                                {avatarImages.map((src, index) => {
+                                    const active = selectedImage === src;
+                                    return (
+                                        <img
+                                            key={index}
+                                            src={src}
+                                            alt={`Avatar ${index + 1}`}
+                                            className={`h-16 w-16 cursor-pointer rounded-full object-cover ring-2 transition sm:h-[4.5rem] sm:w-[4.5rem] ${
+                                                active ? 'ring-cyan-500' : 'ring-transparent hover:ring-cyan-300'
+                                            }`}
+                                            onClick={() => handleSelect(src)}
+                                        />
+                                    );
+                                })}
                             </div>
                         )}
 
@@ -127,11 +135,11 @@ const Pfp = ({ selectedImage, setSelectedImage }) => {
                         {mode === 'upload' && (
                             <div>
                                 {!imageSrc ? (
-                                    <div className="flex flex-col items-center justify-center py-10 text-center">
-                                        <p className="text-sm text-gray-600 mb-4">
+                                    <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 py-12 text-center">
+                                        <p className="mb-4 text-sm text-slate-500">
                                             Upload a photo and crop it to a square.
                                         </p>
-                                        <label className="px-4 py-2 bg-cyan-500 text-white rounded-lg cursor-pointer hover:bg-cyan-600">
+                                        <label className="cursor-pointer rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-cyan-700">
                                             Choose image
                                             <input
                                                 type="file"
@@ -143,7 +151,7 @@ const Pfp = ({ selectedImage, setSelectedImage }) => {
                                     </div>
                                 ) : (
                                     <div>
-                                        <div className="relative w-full h-64 bg-gray-900 rounded-lg overflow-hidden">
+                                        <div className="relative h-64 w-full overflow-hidden rounded-xl bg-slate-900">
                                             <Cropper
                                                 image={imageSrc}
                                                 crop={crop}
@@ -156,8 +164,8 @@ const Pfp = ({ selectedImage, setSelectedImage }) => {
                                                 onCropComplete={onCropComplete}
                                             />
                                         </div>
-                                        <div className="flex items-center gap-3 mt-4">
-                                            <span className="text-sm text-gray-600">Zoom</span>
+                                        <div className="mt-4 flex items-center gap-3">
+                                            <span className="text-sm text-slate-500">Zoom</span>
                                             <input
                                                 type="range"
                                                 min={1}
@@ -165,24 +173,24 @@ const Pfp = ({ selectedImage, setSelectedImage }) => {
                                                 step={0.1}
                                                 value={zoom}
                                                 onChange={(e) => setZoom(Number(e.target.value))}
-                                                className="flex-1 accent-cyan-500"
+                                                className="flex-1 accent-cyan-600"
                                             />
                                         </div>
                                         {uploadError && (
-                                            <p className="text-red-500 text-sm mt-2">{uploadError}</p>
+                                            <p className="mt-2 text-sm text-red-500">{uploadError}</p>
                                         )}
-                                        <div className="flex justify-between mt-4">
+                                        <div className="mt-4 flex justify-between">
                                             <button
                                                 onClick={() => setImageSrc(null)}
                                                 disabled={uploading}
-                                                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-60 cursor-pointer"
+                                                className="cursor-pointer rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60"
                                             >
                                                 Change image
                                             </button>
                                             <button
                                                 onClick={handleUploadSave}
                                                 disabled={uploading || !croppedAreaPixels}
-                                                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded hover:from-cyan-600 hover:to-teal-600 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                                                className="cursor-pointer rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-cyan-700 disabled:cursor-not-allowed disabled:opacity-60"
                                             >
                                                 {uploading ? 'Uploading…' : 'Save photo'}
                                             </button>
@@ -192,8 +200,11 @@ const Pfp = ({ selectedImage, setSelectedImage }) => {
                             </div>
                         )}
 
-                        <div className="flex justify-end mt-4">
-                            <button onClick={closeAll} className="px-4 py-2 bg-gray-300 rounded hover:cursor-pointer">
+                        <div className="mt-4 flex justify-end border-t border-slate-100 pt-4">
+                            <button
+                                onClick={closeAll}
+                                className="cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-100"
+                            >
                                 Close
                             </button>
                         </div>

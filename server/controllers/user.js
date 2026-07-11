@@ -1,6 +1,28 @@
 const User = require("../models/user");
 const Profile = require("../models/profile");
 
+// Load the requester's relationship id sets (as strings) once, so results can
+// be annotated without a query per user.
+async function relationshipSets(userId) {
+  const self = await User.findById(userId).select(
+    "friends sentRequests receivedRequests"
+  );
+  return {
+    friends: new Set((self?.friends || []).map(String)),
+    sent: new Set((self?.sentRequests || []).map(String)),
+    recv: new Set((self?.receivedRequests || []).map(String)),
+  };
+}
+
+// Requester's relationship to `id`: friend | outgoing | incoming | none.
+function relationshipFor(id, sets) {
+  const s = id.toString();
+  if (sets.friends.has(s)) return "friend";
+  if (sets.sent.has(s)) return "outgoing"; // requester sent them a pending req
+  if (sets.recv.has(s)) return "incoming"; // they sent the requester a pending req
+  return "none";
+}
+
 // Attach each user's profile avatar so the client never has to join manually.
 async function withAvatars(users) {
   const ids = users.map((u) => u._id);
@@ -46,7 +68,13 @@ async function searchUsers(req, res) {
       .select("first_name last_name username email online")
       .limit(10);
 
-    res.json({ users: await withAvatars(users) });
+    const sets = await relationshipSets(req.user.userId);
+    const withRel = (await withAvatars(users)).map((u) => ({
+      ...u,
+      relationship: relationshipFor(u._id, sets),
+    }));
+
+    res.json({ users: withRel });
   } catch (err) {
     console.error("Error searching users:", err);
     return res.status(500).json({ error: "Server error" });
@@ -65,6 +93,8 @@ async function getUserById(req, res) {
       "selectedImage statusMood pronoun hobbies onlineStatus"
     );
 
+    const sets = await relationshipSets(req.user.userId);
+
     res.json({
       user: {
         _id: user._id,
@@ -77,6 +107,7 @@ async function getUserById(req, res) {
         statusMood: profile?.statusMood || "",
         pronoun: profile?.pronoun || "",
         hobbies: profile?.hobbies || {},
+        relationship: relationshipFor(user._id, sets),
       },
     });
   } catch (err) {

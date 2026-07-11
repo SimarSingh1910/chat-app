@@ -13,21 +13,25 @@ const LoginPage = () => {
     // Arriving with a notice (e.g. after a password reset) opens the sign-in view.
     const [isSignUp, setIsSignUp] = useState(!notice);
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-white">
             <NavbarLogin />
             <TextContent />
-            {notice && (
-                <div className="max-w-md mx-auto px-4">
-                    <div className="rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm text-center px-4 py-3">
-                        {notice}
-                    </div>
+
+            <section id="auth" className="scroll-mt-16 border-b border-slate-200 bg-slate-50">
+                <div className="mx-auto max-w-md px-4 py-16 sm:py-20">
+                    {notice && (
+                        <div className="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700">
+                            {notice}
+                        </div>
+                    )}
+                    {isSignUp ? (
+                        <SignUp switchToSignIn={() => setIsSignUp(false)} />
+                    ) : (
+                        <SignIn switchToSignUp={() => setIsSignUp(true)} />
+                    )}
                 </div>
-            )}
-            {isSignUp ? (
-                <SignUp switchToSignIn={() => setIsSignUp(false)} />
-            ) : (
-                <SignIn switchToSignUp={() => setIsSignUp(true)} />
-            )}
+            </section>
+
             <LowerPart />
         </div>
     )

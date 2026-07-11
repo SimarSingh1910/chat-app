@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const status = [
     'Exploring new ideas',
@@ -9,7 +9,7 @@ const status = [
     'Deep focus mode',
 ];
 
-const Status = ({value,setValue}) => {
+const Status = ({ value, setValue }) => {
     const [showDropdown, setShowDropdown] = useState(false);
     const containerRef = useRef(null);
 
@@ -30,16 +30,16 @@ const Status = ({value,setValue}) => {
     };
 
     return (
-        <div className="m-5 relative" ref={containerRef}>
-            <label htmlFor="status" className="font-medium">
-                Status/Mood
+        <div className="relative" ref={containerRef}>
+            <label htmlFor="status" className="mb-1.5 block text-sm font-medium text-slate-700">
+                Status / Mood
             </label>
             <div className="relative">
                 <input
                     type="text"
                     name="status"
                     id="status"
-                    className="border border-gray-300 w-full mt-2 rounded-lg placeholder:text-gray-700 bg-gray-100 p-2 focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-3.5 pr-10 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
                     placeholder="Say something about yourself"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
@@ -47,25 +47,21 @@ const Status = ({value,setValue}) => {
                 <button
                     type="button"
                     onClick={() => setShowDropdown((prev) => !prev)}
-                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    aria-label="Suggested moods"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                 >
-                    <Menu
-                        size={18}
-                        className='mt-2'
-                    />
+                    <ChevronDown size={16} />
                 </button>
             </div>
             {showDropdown && (
-                <ul className="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                <ul className="absolute z-10 mt-2 w-full overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg">
                     {status
-                        .filter((mood) =>
-                            mood.toLowerCase().includes(value.toLowerCase())
-                        )
+                        .filter((mood) => mood.toLowerCase().includes(value.toLowerCase()))
                         .map((mood, index) => (
                             <li
                                 key={index}
                                 onClick={() => handleSelect(mood)}
-                                className="px-4 py-2 hover:bg-blue-100 cursor-pointer text-gray-800"
+                                className="cursor-pointer px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-cyan-50 hover:text-cyan-700"
                             >
                                 {mood}
                             </li>
@@ -77,4 +73,3 @@ const Status = ({value,setValue}) => {
 };
 
 export default Status;
-

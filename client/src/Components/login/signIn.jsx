@@ -5,50 +5,41 @@ import InputForm from './inputForm';
 import Google from './google';
 
 const SignIn = ({ switchToSignUp }) => {
-
-
-
-    const { ref, inView } = useInView({
-        triggerOnce: false,
-        threshold: 0.2,
-    });
-
+    const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
     return (
-        <div className='bg-gradient-to-r from-cyan-500 to-teal-500 min-h-screen flex items-center justify-center py-8'>
-            <Motion.div
-                ref={ref}
-                initial={{ opacity: 0, y: 80, scale: 0.90 }}
-                animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                className='flex flex-col items-center justify-center w-full max-w-md mx-auto p-4 sm:p-6 lg:p-8'
-            >
-                <div className='bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full'>
-                    <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-6 text-center'>
-                        Welcome Back!!
-                    </h1>
+        <Motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+        >
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Welcome back</h1>
+            <p className="mt-1 text-sm text-slate-500">Sign in to continue to ChatApp.</p>
 
-                    <InputForm />
-                    <div className='mt-4 text-center'>
-                        <p className='text-gray-600 text-sm'>
-                            Don't have an account?
-                            <span
-                                onClick={switchToSignUp}
-                                className='text-cyan-500 hover:text-cyan-600 cursor-pointer font-semibold ml-1'
-                            >
-                                Sign Up
-                            </span>
-                        </p>
-                    </div>
-                    <div className='flex items-center justify-between '>
-                        <hr className='w-full border-gray-300' />
-                        <span className='text-gray-500 mx-4'>or</span>
-                        <hr className='w-full border-gray-300' />
-                    </div>
-                    <Google />
-                </div>
-            </Motion.div>
-        </div>
+            <div className="mt-6">
+                <InputForm />
+            </div>
+
+            <p className="mt-5 text-center text-sm text-slate-500">
+                Don't have an account?
+                <button
+                    onClick={switchToSignUp}
+                    className="ml-1 font-semibold text-cyan-600 transition-colors hover:text-cyan-700"
+                >
+                    Sign up
+                </button>
+            </p>
+
+            <div className="my-5 flex items-center gap-4">
+                <hr className="w-full border-slate-200" />
+                <span className="text-xs font-medium uppercase tracking-wide text-slate-400">or</span>
+                <hr className="w-full border-slate-200" />
+            </div>
+
+            <Google />
+        </Motion.div>
     );
 };
 

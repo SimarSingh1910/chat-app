@@ -9,16 +9,13 @@ const Google = () => {
         window.location.href = `${API_URL}/auth/google`;
     };
     return (
-        <div>
-            <button
-                className='w-full bg-white text-gray-800 mt-2 font-semibold py-2 px-4 rounded-lg shadow hover:bg-gray-100 transition duration-200 flex items-center justify-center space-x-2'
-                onClick={handleGoogleLogin}
-            >
-                <img src={googleLogo} alt="Google Logo" className='w-5 h-5 rounded-full' />
-                {/* <span className='hidden sm:inline'>Sign in with</span> */}
-                <span>Google</span>
-            </button>
-        </div>
+        <button
+            onClick={handleGoogleLogin}
+            className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+        >
+            <img src={googleLogo} alt="" className="h-5 w-5" />
+            <span>Continue with Google</span>
+        </button>
     )
 }
 

@@ -67,6 +67,19 @@ async function createConversation(req, res) {
       return res.status(404).json({ error: "Participant not found" });
     }
 
+    // Hard gate: a NEW conversation can only be started with a friend. Applies
+    // to creation ONLY — existing conversations and messaging are grandfathered
+    // (unfriending does not delete chats; messages self-expire in 24h).
+    const self = await User.findById(req.user.userId).select("friends");
+    const isFriend =
+      self &&
+      self.friends.some((f) => f.toString() === participantId.toString());
+    if (!isFriend) {
+      return res
+        .status(403)
+        .json({ error: "You can only start a chat with a friend" });
+    }
+
     // Sort participants for a deterministic, pair-unique key
     const participants = [req.user.userId, participantId].map(String).sort();
     const participantsKey = participants.join("_");

@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import LeftPanel from '../Components/Home/LeftPanel';
 import MiddlePanel from '../Components/Home/MiddlePanel';
 import RightPanel from '../Components/Home/RightPanel';
 import { useChat } from '../Components/ChatContext';
+import { useFriends } from '../Components/FriendsContext';
 
 const HomePage = () => {
-    const { activeConversation, closeConversation } = useChat();
+    const { activeConversation, closeConversation, startConversation } = useChat();
+    const { showToast } = useFriends();
     const [showInfo, setShowInfo] = useState(false);
+    const [leftTab, setLeftTab] = useState('chats');
+
+    // Shared Message action: reuse ChatContext's create/open flow, then switch
+    // to the Chats tab. startConversation returns null on failure (incl. the
+    // 403 hard-gate) — surface a friendly toast instead of a silent failure.
+    const handleMessage = useCallback(async (user) => {
+        const conversation = await startConversation(user);
+        if (conversation) {
+            setLeftTab('chats');
+            setShowInfo(false);
+        } else {
+            showToast('You can only chat with a friend');
+        }
+    }, [startConversation, showToast]);
 
     return (
         <div className="h-screen bg-gradient-to-br from-cyan-100 via-white to-teal-100 md:p-4">
@@ -16,7 +32,7 @@ const HomePage = () => {
                     className={`w-full md:w-80 lg:w-87 shrink-0 border-r border-gray-200 bg-white
                         ${activeConversation ? 'hidden md:flex' : 'flex'} flex-col min-h-0`}
                 >
-                    <LeftPanel />
+                    <LeftPanel leftTab={leftTab} setLeftTab={setLeftTab} onMessage={handleMessage} />
                 </aside>
 
                 {/* Conversation thread */}
@@ -36,7 +52,7 @@ const HomePage = () => {
                         className="absolute inset-y-0 right-0 z-20 w-full sm:w-96 lg:static lg:w-80 xl:w-88 shrink-0
                             bg-white border-l border-gray-200 shadow-2xl lg:shadow-none flex flex-col min-h-0"
                     >
-                        <RightPanel onClose={() => setShowInfo(false)} />
+                        <RightPanel onClose={() => setShowInfo(false)} onMessage={handleMessage} />
                     </aside>
                 )}
             </div>
