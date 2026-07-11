@@ -2,6 +2,15 @@ import React from 'react';
 
 const DEFAULT_PIC = '/images/default-profile-pic.jpg';
 
+// An avatar value is EITHER a custom Cloudinary URL (starts with http) or a
+// local preset path (e.g. "/images/Bust/peep-3.png"). Both are valid <img src>
+// values; this makes the two cases explicit and falls back to the default pic.
+const resolveAvatarSrc = (value) => {
+    if (!value) return DEFAULT_PIC;
+    if (/^https?:\/\//i.test(value)) return value; // remote (Cloudinary) URL
+    return value; // local preset path
+};
+
 const SIZES = {
     sm: 'w-9 h-9',
     md: 'w-12 h-12',
@@ -14,7 +23,7 @@ const SIZES = {
 const Avatar = ({ src, alt = 'avatar', size = 'md', online, className = '' }) => (
     <div className={`relative shrink-0 ${SIZES[size] || SIZES.md} ${className}`}>
         <img
-            src={src || DEFAULT_PIC}
+            src={resolveAvatarSrc(src)}
             alt={alt}
             onError={(e) => {
                 if (e.currentTarget.src !== window.location.origin + DEFAULT_PIC) {

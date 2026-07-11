@@ -1,8 +1,53 @@
 import React, { useState } from 'react'
+import api from '../../lib/api'
 
 const UsernameSec = ({ user, setUser }) => {
 
     const [edit, setEdit] = useState(false);
+    const [draft, setDraft] = useState('');
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState('');
+
+    const openEditor = () => {
+        setDraft(user?.username || '');
+        setError('');
+        setEdit(true);
+    };
+
+    const closeEditor = () => {
+        if (saving) return;
+        setEdit(false);
+        setError('');
+    };
+
+    const handleSaveUsername = async () => {
+        // Match the User schema's lowercase/trim so local state mirrors the DB.
+        const username = draft.trim().toLowerCase();
+        if (!username) {
+            setError('Username cannot be empty.');
+            return;
+        }
+        if (username === user?.username) {
+            closeEditor();
+            return;
+        }
+
+        setSaving(true);
+        setError('');
+        try {
+            await api.post('/profile', { username });
+            setUser({ ...user, username }); // reflect immediately in the UI
+            setEdit(false);
+        } catch (err) {
+            setError(
+                err.response?.data?.error ||
+                'Failed to update username. Please try again.'
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
+
     const handleDeleteAccount = async () => {
         if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
             try {
@@ -31,23 +76,28 @@ const UsernameSec = ({ user, setUser }) => {
                         <h2 className="text-lg font-semibold mb-4">Edit Username</h2>
                         <input
                             type="text"
-                            value={user.username}
-                            onChange={(e) => setUser({ ...user, username: e.target.value })}
-                            className='border border-gray-300 p-2 rounded w-full'
+                            value={draft}
+                            onChange={(e) => setDraft(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSaveUsername()}
+                            disabled={saving}
+                            autoFocus
+                            className='border border-gray-300 p-2 rounded w-full disabled:opacity-60'
                         />
+                        {error && (
+                            <p className="text-red-500 text-sm mt-2">{error}</p>
+                        )}
                         <div className="flex justify-between mt-4">
                             <button
-                                onClick={() => {
-                                    setEdit(false)
-                                    console.log("Username updated:", user.username);
-                                }}
-                                className="px-4 py-2 bg-gray-300 rounded hover:cursor-pointer"
+                                onClick={handleSaveUsername}
+                                disabled={saving}
+                                className="px-4 py-2 bg-gray-300 rounded hover:cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                             >
-                                Save
+                                {saving ? 'Saving…' : 'Save'}
                             </button>
                             <button
-                                onClick={() => setEdit(false)}
-                                className="px-4 py-2 bg-gray-300 rounded hover:cursor-pointer"
+                                onClick={closeEditor}
+                                disabled={saving}
+                                className="px-4 py-2 bg-gray-300 rounded hover:cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                             >
                                 Close
                             </button>
@@ -65,7 +115,7 @@ const UsernameSec = ({ user, setUser }) => {
             )}
             <div className='flex flex-col gap-3 mt-5'>
                 <button
-                    onClick={() => { setEdit(true) }}
+                    onClick={openEditor}
                     className='btn w-full py-2 px-4 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-md transition hover:cursor-pointer hover:scale-105  hover:from-cyan-600 hover:to-teal-600'>
                     Edit Username
                 </button>

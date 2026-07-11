@@ -13,6 +13,7 @@ require("./passport");
 const connectDB = require("./connection");
 const loginRouter = require("./routes/login");
 const signupRouter = require("./routes/signup");
+const passwordRouter = require("./routes/password");
 const profileRouter = require("./routes/profile");
 const conversationRouter = require("./routes/conversation");
 const messageRouter = require("./routes/message");
@@ -41,7 +42,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({ origin: true, credentials: true }));
-app.use(express.json());
+// Raised from the default (~100kb) to accept cropped avatar data URLs.
+app.use(express.json({ limit: "5mb" }));
 app.use("/images", express.static("public/images"));
 
 // Google Auth Routes
@@ -84,6 +86,8 @@ app.get("/auth/logout", (req, res, next) => {
 // Routes
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
+// Public password-reset routes (/forgot-password, /reset-password).
+app.use("/", passwordRouter);
 app.use("/profile", profileRouter);
 app.use("/conversations", conversationRouter);
 app.use("/messages", messageRouter);
