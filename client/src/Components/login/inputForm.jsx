@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../../lib/api';
 
 const InputForm = () => {
     const [value, setValue] = useState('');
@@ -12,30 +13,17 @@ const InputForm = () => {
             return;
         }
         try {
-            const res = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include', // use if backend uses cookies
-                body: JSON.stringify({
-                    email: value,
-                    password: pass
-                }),
+            const { data } = await api.post('/login', {
+                email: value,
+                password: pass,
             });
-
-            const data = await res.json();
-            if (res.ok) {
-                if (!data.profile) {
-                    window.location.replace('/profile');
-                } else {
-                    window.location.replace('/');
-                }
+            if (!data.profile) {
+                window.location.replace('/profile');
             } else {
-                setError(data.error || 'Login failed.');
+                window.location.replace('/');
             }
         } catch (err) {
-            setError(`An error occurred during login: ${err.message}`);
+            setError(err.response?.data?.error || `An error occurred during login: ${err.message}`);
         }
     };
     const handleEnter = (e) => {

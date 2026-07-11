@@ -4,7 +4,6 @@ const { generateToken } = require("../token");
 
 async function LoginUser(req, res) {
   const { email, password } = req.body;
-  console.log("Login attempt:", email, password);
   if (!email || !password) {
     return res.status(400).send({ error: "Email and password are required" });
   }

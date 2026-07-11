@@ -24,6 +24,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 const URL = process.env.MONGODB_URL;
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
 // Connect to MongoDB
 connectDB(URL);
@@ -34,7 +35,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 );
 app.use(passport.initialize());
@@ -51,7 +52,7 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173/login",
+    failureRedirect: `${CLIENT_URL}/login`,
   }),
   async (req, res) => {
     const token = generateToken(req.user);
@@ -65,9 +66,9 @@ app.get(
     const user = await User.findById(req.user._id);
     const profile = await Profile.findOne({ user: user._id });
     if (!profile) {
-      return res.redirect("http://localhost:5173/profile");
+      return res.redirect(`${CLIENT_URL}/profile`);
     }
-    res.redirect("http://localhost:5173/");
+    res.redirect(`${CLIENT_URL}/`);
   }
 );
 app.get("/auth/logout", (req, res, next) => {

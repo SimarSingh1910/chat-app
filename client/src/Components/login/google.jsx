@@ -1,9 +1,12 @@
 import React from 'react'
 import googleLogo from '../../assets/google-logo.png'
+import { API_URL } from '../../lib/config'
 
 const Google = () => {
     const handleGoogleLogin = () => {
-        window.location.href = 'http://localhost:3000/auth/google';
+        // Full-page redirect to the backend OAuth entrypoint (not an XHR),
+        // so use the configured API origin rather than the axios instance.
+        window.location.href = `${API_URL}/auth/google`;
     };
     return (
         <div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import LeftSection from '../Components/profile/leftSection'
 import RightSection from '../Components/profile/rightSection'
+import api from '../lib/api'
 
 const ProfilePage = () => {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -14,14 +15,7 @@ const ProfilePage = () => {
     useEffect(() => {
         const getUserData = async () => {
             try {
-                const res = await fetch("http://localhost:3000/profile", {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include',
-                });
-                const data = await res.json();
+                const { data } = await api.get('/profile');
                 const profile = data.profile;
 
                 setUser(profile);
